@@ -101,6 +101,7 @@ define(function( require )
 			this.canvas.style.top      = '0px';
 			this.canvas.style.left     = '0px';
 			this.canvas.style.zIndex   =  0;
+			this.canvas.style.filter	 = 'saturate(120%) contrast(120%) hue-rotate(17deg)';
 
 			this.gl = WebGL.getContext( this.canvas, param );
 

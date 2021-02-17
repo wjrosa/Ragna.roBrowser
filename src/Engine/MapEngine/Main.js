@@ -21,13 +21,14 @@ define(function( require )
 	var Session        = require('Engine/SessionStorage');
 	var Network        = require('Network/NetworkManager');
 	var PACKET         = require('Network/PacketStructure');
-	var PACKETVER	   = require('Network/PacketVerManager');
+	var PACKETVER  	   = require('Network/PacketVerManager');
 	var EntityManager  = require('Renderer/EntityManager');
 	var Renderer       = require('Renderer/Renderer');
 	var Damage         = require('Renderer/Effects/Damage');
 	var ChatBox        = require('UI/Components/ChatBox/ChatBox');
 	var ChatRoom       = require('UI/Components/ChatRoom/ChatRoom');
 	var BasicInfo      = require('UI/Components/BasicInfo/BasicInfo');
+	var MainMenu      = require('UI/Components/MainMenu/MainMenu');
 	var WinStats       = require('UI/Components/WinStats/WinStats');
 	var Announce       = require('UI/Components/Announce/Announce');
 	var Equipment      = require('UI/Components/Equipment/Equipment');
@@ -317,7 +318,7 @@ define(function( require )
 				break;
 
 			case StatusProperty.MONEY:
-				BasicInfo.update('zeny', amount);
+				MainMenu.update('zeny', amount);
 				break;
 
 			case StatusProperty.MAXEXP:
@@ -335,16 +336,16 @@ define(function( require )
 				break;
 
 			case StatusProperty.WEIGHT:
-				BasicInfo.weight = amount;
-				if (BasicInfo.weight_max > -1) {
-					BasicInfo.update('weight', BasicInfo.weight, BasicInfo.weight_max );
+				MainMenu.weight = amount;
+				if (MainMenu.weight_max > -1) {
+					MainMenu.update('weight', MainMenu.weight, MainMenu.weight_max );
 				}
 				break;
 
 			case StatusProperty.MAXWEIGHT:
-				BasicInfo.weight_max = amount;
-				if (BasicInfo.weight > -1) {
-					BasicInfo.update('weight', BasicInfo.weight, BasicInfo.weight_max );
+				MainMenu.weight_max = amount;
+				if (MainMenu.weight > -1) {
+					MainMenu.update('weight', MainMenu.weight, MainMenu.weight_max );
 				}
 				break;
 

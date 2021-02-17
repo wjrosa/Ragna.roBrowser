@@ -1,0 +1,10 @@
+#mainmenu { color: #fff }
+#mainmenu { position:absolute; top:0px; left:0px; width:230px; height:70px; font-size:11px; text-shadow:1px 1px black; }
+
+/* LARGE */
+#mainmenu .extra { position:absolute; top:50px; right:5px; }
+#mainmenu .extra { padding-right:10px; }
+#mainmenu .buttons { position:absolute; left:0px; width:220px; opacity:0.5; }
+#mainmenu .buttons:hover { opacity:1.0; }
+#mainmenu .buttons button { float:left; width:54px; height:18px; border:none; margin:0; background-color:transparent; }
+#mainmenu .buttons .clear { clear:both; }

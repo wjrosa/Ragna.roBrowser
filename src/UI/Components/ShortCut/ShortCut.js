@@ -56,8 +56,8 @@ define(function(require)
 	 * @var {Preference} structure to save informations about shortcut
 	 */
 	var _preferences = Preferences.get('ShortCut', {
-		x:        480,
-		y:        0,
+		x:        678,
+		y:        800,
 		size:     1,
 		magnet_top: true,
 		magnet_bottom: false,
@@ -171,7 +171,7 @@ define(function(require)
 
 		this.ui.find('.container').empty();
 		_list.length = list.length;
-		_rowCount    = Math.min( 4, Math.floor(list.length / 9) );
+		_rowCount    = Math.min( 3, Math.floor(list.length / 9) );
 
 		for (i = 0, count = list.length; i < count; ++i) {
 			if (list[i].isSkill) {

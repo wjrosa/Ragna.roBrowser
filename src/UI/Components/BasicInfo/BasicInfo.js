@@ -20,15 +20,8 @@ define(function(require)
 	var Client             = require('Core/Client');
 	var Preferences        = require('Core/Preferences');
 	var Renderer           = require('Renderer/Renderer');
-	var Session            = require('Engine/SessionStorage');
 	var UIManager          = require('UI/UIManager');
 	var UIComponent        = require('UI/UIComponent');
-	var Inventory          = require('UI/Components/Inventory/Inventory');
-	var Equipment          = require('UI/Components/Equipment/Equipment');
-	var SkillList          = require('UI/Components/SkillList/SkillList');
-	var PartyFriends       = require('UI/Components/PartyFriends/PartyFriends');
-	var Guild              = require('UI/Components/Guild/Guild');
-	var Escape             = require('UI/Components/Escape/Escape');
 	var htmlText           = require('text!./BasicInfo.html');
 	var cssText            = require('text!./BasicInfo.css');
 
@@ -46,16 +39,14 @@ define(function(require)
 	BasicInfo.base_exp_next = 1;
 	BasicInfo.job_exp       = 0;
 	BasicInfo.job_exp_next  =-1;
-	BasicInfo.weight        = 0;
-	BasicInfo.weight_max    = 1;
 
 
 	/**
 	 * @var {Preferences} structure
 	 */
 	var _preferences = Preferences.get('BasicInfo', {
-		x:        0,
-		y:        0,
+		x:        640,
+		y:        Infinity,
 		reduce:   true,
 		buttons:  true,
 		magnet_top: true,
@@ -70,46 +61,6 @@ define(function(require)
 	 */
 	BasicInfo.init = function init()
 	{
-
-		// Don't activate drag drop when clicking on buttons
-		this.ui.find('.topbar button').mousedown(function( event ){
-			event.stopImmediatePropagation();
-		});
-
-		this.ui.find('.topbar .right').click(BasicInfo.toggleMode.bind(this));
-		this.ui.find('.toggle_btns').mousedown(BasicInfo.toggleButtons.bind(this));
-
-		this.ui.find('.buttons button').mousedown(function(){
-			switch (this.className) {
-				case 'item':
-					Inventory.ui.toggle();
-					break;
-
-				case 'info':
-					Equipment.toggle();
-					break;
-
-				case 'skill':
-					SkillList.toggle();
-					break;
-
-				case 'option':
-					Escape.ui.toggle();
-					break;
-
-				case 'party':
-					PartyFriends.toggle();
-					break;
-
-				case 'guild':
-					Guild.toggle();
-					break;
-
-				case 'map':
-				case 'quest':
-			}
-		});
-
 		this.draggable();
 	};
 
@@ -133,19 +84,7 @@ define(function(require)
 		
 		// large/small window
 		this.ui.removeClass('small large');
-		if (_preferences.reduce) {
-			this.ui.addClass('small');
-
-			if (_preferences.buttons) {
-				this.ui.find('.buttons').show();
-			}
-			else {
-				this.ui.find('.buttons').hide();
-			}
-		}
-		else {
-			this.ui.addClass('large');
-		}
+		this.ui.addClass('large');
 	};
 
 
@@ -186,56 +125,8 @@ define(function(require)
 	 */
 	BasicInfo.toggleMode = function toggleMode()
 	{
-		var type;
-
-		this.ui.toggleClass('small large');
-
-		if (this.ui.hasClass('large')) {
-			this.ui.find('.buttons').show();
-			return;
-		}
-
-		if (_preferences.buttons) {
-			this.ui.find('.buttons').show();
-			type = 'off';
-		}
-		else {
-			this.ui.find('.buttons').hide();
-			type = 'on';
-		}
-
-		Client.loadFile( DB.INTERFACE_PATH + 'basic_interface/view' + type + '.bmp', function(url) {
-			this.ui.find('.toggle_btns').css('backgroundImage', 'url(' + url + ')');
-		}.bind(this));
+		this.ui.find('.buttons').show();
 	};
-
-
-	/**
-	 * Toggle the list of buttons
-	 */
-	BasicInfo.toggleButtons = function toggleButtons( event )
-	{
-		var type;
-		var $buttons = this.ui.find('.buttons');
-
-		_preferences.buttons = !$buttons.is(':visible');
-
-		if (_preferences.buttons) {
-			$buttons.show();
-			type = 'off';
-		}
-		else {
-			$buttons.hide();
-			type = 'on';
-		}
-
-		Client.loadFile( DB.INTERFACE_PATH + 'basic_interface/view' + type + '.bmp', function(url){
-			this.ui.find('.toggle_btns').css('backgroundImage', 'url(' + url + ')');
-		}.bind(this));
-
-		event.stopImmediatePropagation();
-	};
-
 
 	/**
 	 * Update UI elements
@@ -253,20 +144,6 @@ define(function(require)
 				this.ui.find('.'+ type +'_value').text(val1);
 				break;
 
-			case 'zeny':
-				Session.zeny = val1;
-
-				var list = val1.toString().split('');
-				var i, count = list.length;
-				var str = '';
-
-				for (i = 0; i < count; i++) {
-					str = list[count-i-1] + (i && i%3 ===0 ? ',' : '') + str;
-				}
-
-				this.ui.find('.'+ type +'_value').text(str);
-				break;
-
 			case 'job':
 				this.ui.find('.job_value').text(MonsterTable[val1]);
 				break;
@@ -281,12 +158,6 @@ define(function(require)
 				this.ui.find('.'+ type).show();
 				this.ui.find('.'+ type +' div').css('width', Math.min( 100, Math.floor(val1 * 100 / val2) ) + '%');
 				this.ui.find('.'+ type +'_value').text( Math.min( 100, (Math.floor(val1 * 1000 / val2) * 0.1).toFixed(1)) + '%');
-				break;
-
-			case 'weight':
-				this.ui.find('.weight_value').text(val1 / 10 | 0);
-				this.ui.find('.weight_total').text(val2 / 10 | 0);
-				this.ui.find('.weight').css('color',  val1 < (val2/2) ? '' : 'red');
 				break;
 
 			case 'hp':

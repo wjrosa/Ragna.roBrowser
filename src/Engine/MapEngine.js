@@ -41,6 +41,7 @@ define(function( require )
 	var ChatBox          = require('UI/Components/ChatBox/ChatBox');
 	var MiniMap          = require('UI/Components/MiniMap/MiniMap');
 	var BasicInfo        = require('UI/Components/BasicInfo/BasicInfo');
+	var MainMenu        = require('UI/Components/MainMenu/MainMenu');
 	var WinStats         = require('UI/Components/WinStats/WinStats');
 	var Inventory        = require('UI/Components/Inventory/Inventory');
 	var CartItems          = require('UI/Components/CartItems/CartItems');
@@ -186,6 +187,7 @@ define(function( require )
 		PartyFriends.prepare();
 		StatusIcons.prepare();
 		BasicInfo.prepare();
+		MainMenu.prepare();
 		ChatBox.prepare();
 		Guild.prepare();
 
@@ -250,9 +252,9 @@ define(function( require )
 
 		BasicInfo.update('blvl', Session.Character.level );
 		BasicInfo.update('jlvl', Session.Character.joblevel );
-		BasicInfo.update('zeny', Session.Character.money );
 		BasicInfo.update('name', Session.Character.name );
 		BasicInfo.update('job',  Session.Character.job );
+		MainMenu.update('zeny', Session.Character.money );
 
 		// Fix http://forum.robrowser.com/?topic=32177.0
 		onMapChange({
@@ -300,6 +302,7 @@ define(function( require )
 			MiniMap.setMap( MapRenderer.currentMap );
 			ChatBox.append();
 			BasicInfo.append();
+			MainMenu.append();
 			Escape.append();
 			Inventory.append();
 			CartItems.append();
